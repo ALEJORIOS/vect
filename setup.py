@@ -1,11 +1,16 @@
 from setuptools import setup
-from setuptools import find_packages
+
+with open("README.md", "r") as readme_file:
+    readme = readme_file.read()
+    
 setup(
 
     name = "vect",
-    version = "0.2",
+    version = "0.0.4",
     description = "This powerful tool can help you in vector related work in python",
     author = "Alejandro Ríos",
+    long_description = readme,
+    url = "https://github.com/ALEJORIOS/vect.git",
     keywords = ["vect", "vector", "algebra"],
     packages = ["vect","vect"],
 )
