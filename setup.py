@@ -12,5 +12,5 @@ setup(
     long_description = readme,
     url = "https://github.com/ALEJORIOS/vect.git",
     keywords = ["vect", "vector", "algebra"],
-    packages = ["vect","vect"],
+    packages = ["vect","vector"],
 )

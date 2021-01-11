@@ -1,4 +1,3 @@
-from matMul import matMultiplication
 class array:
   """
   Array class
@@ -7,11 +6,6 @@ class array:
   def __init__(self, v, ismat = False):
     self.vector = v
     self.l = len(v)
-    try:
-      self.w = len(v[0])
-      ismat = True
-    except:
-      self.w = 1
     self.ismat = ismat
     self.types = [type(self.vector[i]) for i in range(self.l)]
     if all(list == i for i in self.types):
@@ -105,16 +99,6 @@ class array:
   @operations(mod, True)  
   def __rmod__(self, other):
     return
-
-  def __matmul__(self, other):
-    if self.w != other.l:
-      raise Exception("The columns in the first matrix must be the same as the rows in the second")
-    product = [[0 for i in range(other.w)] for j in range(self.l)]
-    for i in range(self.l):
-      for j in range(other.w):
-        for k in range(self.w):
-          product[i][j] = product[i][j] + self.vector[i][k] * other.vector[k][j]
-    return product
 
   def __round__(self, ndigits = 2):
     return [round(i,ndigits) for i in self]

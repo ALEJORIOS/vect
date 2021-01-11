@@ -1,0 +1,8 @@
+README.md
+setup.py
+vect/__init__.py
+vect/vector.py
+vect.egg-info/PKG-INFO
+vect.egg-info/SOURCES.txt
+vect.egg-info/dependency_links.txt
+vect.egg-info/top_level.txt
