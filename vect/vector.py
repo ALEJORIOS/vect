@@ -1,4 +1,4 @@
-from matMul import matMultiplication
+
 class array:
   """
   Array class
@@ -40,6 +40,7 @@ class array:
   sub = lambda x,y: x-y
   mul = lambda x,y: x*y
   div = lambda x,y: x/y
+  fdiv = lambda x,y: x//y
   mod = lambda x,y: x%y
   exp = lambda x,y: x**y
 
@@ -90,6 +91,14 @@ class array:
   def __rtruediv__(self, other):
     return
 
+  @operations(fdiv)
+  def __floordiv__(self, other):
+    return
+
+  @operations(fdiv, True)
+  def __rfloordiv__(self, other):
+    return
+
   @operations(exp)
   def __pow__(self, other):
     return
@@ -106,6 +115,17 @@ class array:
   def __rmod__(self, other):
     return
 
+  def __divmod__(self, other):
+    division = []
+    module = []
+    if type(other) != array:
+      other = array([other])
+    for i in range(max(len(self.vector),len(other.vector))):
+      division.append(array.div(self.vector[i%self.l],other.vector[i%other.l]))
+      module.append(array.mod(self.vector[i%self.l],other.vector[i%other.l]))
+    return [array(division), array(module)]
+
+  #Matrix Multiplication
   def __matmul__(self, other):
     if self.w != other.l:
       raise Exception("The columns in the first matrix must be the same as the rows in the second")
@@ -118,18 +138,31 @@ class array:
 
   def __round__(self, ndigits = 2):
     return [round(i,ndigits) for i in self]
-  def __bool__(self):
-    return bool(self)
+
   def col(self, ind):
     if type(ind) == int:
       return [self.vector[i][ind] for i in range(self.l)]
     if type(ind) == list or type(ind) == range:
       return [[self.vector[i][j] for i in range(self.l)] for j in ind]
+
   def row(self, ind):
     if type(ind) == int:
       return self.vector[ind]
     if type(ind) == list or type(ind) == range:
       return [self.vector[i] for i in ind]
+    
+  def __lshift__(self, other):
+    if type(other) != int:
+      raise Exception("This function only works with an int")
+    else:
+      return self.vector[other%self.l:]+self.vector[:other%self.l]
+    
+  def __rshift__(self,other):
+    if type(other) != int:
+      raise Exception("This function only works with an int")
+    else:
+      return self.vector[self.l-other%self.l:]+self.vector[:self.l-other%self.l]
+
   def __version__(self):
     return "This library was created for ARINS project, January 2021"
     
