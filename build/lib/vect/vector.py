@@ -32,8 +32,6 @@ class array:
     return self.vector[index]
   def __setitem__(self,index,value):
     self.vector[index] = value
-    return
-
   def __len__(self):
     return len(self.vector)
   
@@ -165,46 +163,6 @@ class array:
     else:
       return self.vector[self.l-other%self.l:]+self.vector[:self.l-other%self.l]
 
-  def __abs__(self):
-    return array([abs(self[i]) for i in range(self.l)])
   def __version__(self):
     return "This library was created for ARINS project, January 2021"
     
-class matrix:
-  """Matrix class"""
-  def __init__(self, mat):
-    self.mat = mat
-  
-  #Get and Set
-  def __getitem__(self,index):
-    return self.mat[index]
-
-  def __setitem__(self,index,value):
-    self.mat[index] = value
-  
-  def __len__(self):
-    raise Exception("This function is unavailable, use insted len method")
-
-  def len(self):
-    return (len(self.mat), len(self.mat[0]))
-
-  def col(self, ind):
-    if type(ind) == int:
-      return [self.mat[i][ind%self.len()[1]] for i in range(self.len()[0])]
-    if type(ind) == list or type(ind) == range:
-      return [[self.mat[i][j%self.len()[1]] for i in range(self.len()[0])] for j in ind]
-
-  def row(self, ind):
-    if type(ind) == int:
-      return self.mat[ind%self.len()[0]]
-    if type(ind) == list or type(ind) == range:
-      return [self.mat[i%self.len()[0]] for i in ind]
-
-  #Math Operations
-  add = lambda x,y: x+y
-  sub = lambda x,y: x-y
-  mul = lambda x,y: x*y
-  div = lambda x,y: x/y
-  fdiv = lambda x,y: x//y
-  mod = lambda x,y: x%y
-  exp = lambda x,y: x**y

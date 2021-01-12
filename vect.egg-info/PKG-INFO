@@ -1,0 +1,19 @@
+Metadata-Version: 1.0
+Name: vect
+Version: 0.0.7
+Summary: This powerful tool can help you in vector related work in python
+Home-page: https://github.com/ALEJORIOS/vect.git
+Author: Alejandro Ríos
+Author-email: UNKNOWN
+License: UNKNOWN
+Description: # vect
+        This powerful tool can help you in vector related work in python. From lists you can create vectors and matrices and operate with them.
+        
+        Some of these features are:
+        - Operations between vectors
+        - Operations between matrices
+        - Operation between vectors and matrices
+        
+        This library is in continuous improvement and new functionalities and features will be integrated soon
+Keywords: vect,vector,algebra
+Platform: UNKNOWN

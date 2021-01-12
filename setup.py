@@ -6,7 +6,7 @@ with open("README.md", "r") as readme_file:
 setup(
 
     name = "vect",
-    version = "0.0.6b",
+    version = "0.0.7",
     description = "This powerful tool can help you in vector related work in python",
     author = "Alejandro Ríos",
     long_description = readme,
