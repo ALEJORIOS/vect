@@ -1,39 +1,30 @@
-
+import showRepresentation
 class array:
   """
   Array class
   """
 
-  def __init__(self, v, ismat = False):
+  def __init__(self, v):
     self.vector = v
     self.l = len(v)
-    try:
-      self.w = len(v[0])
-      ismat = True
-    except:
-      self.w = 1
-    self.ismat = ismat
-    self.types = [type(self.vector[i]) for i in range(self.l)]
-    if all(list == i for i in self.types):
-      self.vector = [array(i) for i in self.vector]
-      self.ismat = True
-    if all(array == i for i in self.types):
-      self.ismat = True
+
+  #Show vector (Raw)
   def __repr__(self):
-    if self.ismat:
-      return "array({})".format("\n".join([str(i) for i in self.vector]))
-    return "array({})".format(self.vector)
+    return showRepresentation.vector(self, True)
+
+  #            (With print)
   def __str__(self):
-    if self.ismat:
-      return "{}".format("\n".join([str(i) for i in self.vector]))
-    else:
-      return "{}".format(self.vector)
+    return showRepresentation.vector(self)
+
+  #Get and set
   def __getitem__(self,index):
     return self.vector[index]
+
   def __setitem__(self,index,value):
     self.vector[index] = value
     return
 
+  #Length of vector
   def __len__(self):
     return len(self.vector)
   
@@ -140,18 +131,6 @@ class array:
 
   def __round__(self, ndigits = 2):
     return [round(i,ndigits) for i in self]
-
-  def col(self, ind):
-    if type(ind) == int:
-      return [self.vector[i][ind] for i in range(self.l)]
-    if type(ind) == list or type(ind) == range:
-      return [[self.vector[i][j] for i in range(self.l)] for j in ind]
-
-  def row(self, ind):
-    if type(ind) == int:
-      return self.vector[ind]
-    if type(ind) == list or type(ind) == range:
-      return [self.vector[i] for i in ind]
     
   def __lshift__(self, other):
     if type(other) != int:
@@ -169,12 +148,18 @@ class array:
     return array([abs(self[i]) for i in range(self.l)])
   def __version__(self):
     return "This library was created for ARINS project, January 2021"
-    
+
+####################
+#START MATRIX CLASS#
+####################
+
 class matrix:
   """Matrix class"""
   def __init__(self, mat):
     self.mat = mat
-  
+    self.rows = self.len()[0]
+    self.columns = self.len()[1]
+
   #Get and Set
   def __getitem__(self,index):
     return self.mat[index]
@@ -190,15 +175,24 @@ class matrix:
 
   def col(self, ind):
     if type(ind) == int:
-      return [self.mat[i][ind%self.len()[1]] for i in range(self.len()[0])]
+      return [self.mat[i][ind%self.columns] for i in range(self.rows)]
     if type(ind) == list or type(ind) == range:
-      return [[self.mat[i][j%self.len()[1]] for i in range(self.len()[0])] for j in ind]
+      return array([[self.mat[i][j%self.columns] for i in range(self.rows)] for j in ind])
 
   def row(self, ind):
     if type(ind) == int:
       return self.mat[ind%self.len()[0]]
     if type(ind) == list or type(ind) == range:
-      return [self.mat[i%self.len()[0]] for i in ind]
+      return array([self.mat[i%self.len()[0]] for i in ind])
+
+  def sum(self, value):
+    return matrix([[self.mat[i][j]+value for i in range(self.rows)] for j in range(self.columns)])
+
+  def __str__(self):
+    return showRepresentation.matrix(self, True)
+
+  def __repr__(self):
+    return showRepresentation.matrix(self)
 
   #Math Operations
   add = lambda x,y: x+y
