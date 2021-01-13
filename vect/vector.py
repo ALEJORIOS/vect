@@ -185,20 +185,56 @@ class matrix:
     if type(ind) == list or type(ind) == range:
       return array([self.mat[i%self.len()[0]] for i in ind])
 
-  def sum(self, value):
-    return matrix([[self.mat[i][j]+value for i in range(self.rows)] for j in range(self.columns)])
-
   def __str__(self):
-    return showRepresentation.matrix(self, True)
-
-  def __repr__(self):
     return showRepresentation.matrix(self)
 
+  def __repr__(self):
+    return showRepresentation.matrix(self, True)
+
   #Math Operations
-  add = lambda x,y: x+y
-  sub = lambda x,y: x-y
-  mul = lambda x,y: x*y
-  div = lambda x,y: x/y
-  fdiv = lambda x,y: x//y
-  mod = lambda x,y: x%y
-  exp = lambda x,y: x**y
+  adds = lambda x,y: x+y
+  subs = lambda x,y: x-y
+  muls = lambda x,y: x*y
+  divs = lambda x,y: x/y
+  fdivs = lambda x,y: x//y
+  mods = lambda x,y: x%y
+  exps = lambda x,y: x**y
+
+  def operations(ope):
+    def function(func):
+      def wrapper(self, value):
+        return matrix([[ope(self.mat[j][i], value) for i in range(self.rows)] for j in range(self.columns)])
+      return wrapper
+    return function
+  
+  @operations(adds)
+  def sum(self, value):
+    return
+  @operations(subs)
+  def sub(self, value):
+    return
+
+  @operations(muls)
+  def mul(self, value):
+    return
+
+  @operations(divs)
+  def div(self, value):
+    return
+
+  @operations(fdivs)
+  def fdiv(self, value):
+    return
+
+  @operations(mods)
+  def mod(self, value):
+    return
+
+  @operations(exps)
+  def pow(self, value):
+    return
+
+
+
+
+
