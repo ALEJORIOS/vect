@@ -1,4 +1,6 @@
 import showRepresentation
+import copy
+
 class array:
   """
   Array class
@@ -200,16 +202,69 @@ class matrix:
   mods = lambda x,y: x%y
   exps = lambda x,y: x**y
 
+  def AddOperations(ope):
+    def function(func):
+      def wrapper(self, other):
+        if self.len() != other.len():
+          raise Exception("Two matrices must have the same shape to be added, if you want to add an int or a float to all elements use the sum method")
+        else:
+          return matrix([[ope(self.mat[i][j], other.mat[i][j]) for j in range(self.columns)] for i in range(self.rows)])
+      return wrapper
+    return function
+  
+  def ProductOperations(ope):
+    def function(func):
+      def wrapper(self, other):
+        if self.columns != other.rows:
+          raise Exception("The columns in the first matrix must be the same as the rows in the second")
+        product = [[0 for i in range(other.columns)] for j in range(self.rows)]
+        for i in range(self.rows):
+          for j in range(other.columns):
+            for k in range(self.columns):
+              product[i][j] = product[i][j] + ope(self.mat[i][k], other.mat[k][j])
+              product[i][j] = round(product[i][j],4)
+        return matrix(product)
+      return wrapper
+    return function
+
+  @ AddOperations(adds)
+  def __add__(self, other):
+    return
+  
+  @ AddOperations(subs)
+  def __sub__(self, other):
+    return
+  
+  @ ProductOperations(muls)
+  def __mul__(self, other):
+    return
+  
+  @ ProductOperations(muls)
+  def __matmul__(self, other):
+    return
+
+  @ AddOperations(mods)
+  def __mod__(self, other):
+    return
+  
+  @ AddOperations(exps)
+  def __pow__(self, other):
+    return
+
+  def __truediv__(self, other):
+    return matrix(self.mat) * other.inv()
+
   def operations(ope):
     def function(func):
       def wrapper(self, value):
-        return matrix([[ope(self.mat[j][i], value) for i in range(self.rows)] for j in range(self.columns)])
+        return matrix([[round(ope(self.mat[j][i], value), 4) for i in range(self.rows)] for j in range(self.columns)])
       return wrapper
     return function
   
   @operations(adds)
   def sum(self, value):
     return
+
   @operations(subs)
   def sub(self, value):
     return
@@ -234,6 +289,48 @@ class matrix:
   def pow(self, value):
     return
 
+  def det(self):
+    resMat = copy.copy(self.mat)
+    for i in range(self.rows):
+        for j in range(i+1, self.rows):
+            factor = resMat[j][i] / resMat[i][i]
+
+            for k in range(self.rows):
+                resMat[j][k] = resMat[j][k] - factor * resMat[i][k]
+    product = 1
+    for i in range(self.rows):
+        product *= resMat[i][i]
+    
+    return round(product,4)
+
+  def transpose(self):
+    resMat = copy.copy(self.mat)
+    return matrix([[resMat[i][j] for i in range(self.rows)] for j in range(self.columns)])
+  
+  def cancel(self, row, column):
+    rows = list(range(self.rows))
+    rows.pop(row)
+    columns = list(range(self.columns))
+    columns.pop(column)
+    return matrix([[self.mat[j][i] for i in columns] for j in rows])
+
+  def adj(self):
+    resMat = create(self.rows, self.columns)
+    for i in range(self.rows):
+      for j in range(self.columns):
+        noCancel = self.cancel(i,j)
+        resMat[i][j] = (-1)**(i+j)*(noCancel.det())
+    return resMat
+  
+  def inv(self):
+    return ((self.adj()).transpose()).div(self.det())
+
+#Create matrix
+def create(rows, columns, content = 0):
+  r = []
+  for i in range(rows):
+    r.append([content for j in range(columns)])
+  return matrix(r)
 
 
 
